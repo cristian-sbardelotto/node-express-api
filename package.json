@@ -1,5 +1,5 @@
 {
-  "name": "Express-API",
+  "name": "express-api",
   "version": "1.0.0",
   "description": "A study about NodeJS",
   "main": "server.ts",
