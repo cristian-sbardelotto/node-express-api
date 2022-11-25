@@ -5,6 +5,7 @@ import { v4, V4Options } from 'uuid';
 const app = express();
 app.use(express.json());
 
+
 interface UserProps {
   id?: string;
   name: string;
@@ -12,11 +13,7 @@ interface UserProps {
 };
 
 /* Data */
-const users: UserProps[] = [
-  {name: 'Adriano', age: 47},
-  {name: 'Cristian', age: 14},
-  {name: 'Grace', age: 18}
-];
+const users: UserProps[] = [];
 
 /* Get Method */
 app.get('/users', (request, response) => {
@@ -34,42 +31,37 @@ app.post('/users', (request, response) => {
     age,
   });
 
-  console.log(body);
   return response.json(users);
 });
 
 /* Put Method */
 app.put('/users:id', (request, response) => {
   const { id } = request.params;
-  const { name, age } = request.body;
+  const {name, age } = request.body;
 
   const user = users.find(user => user.id === id);
 
-  if(!user) {
+  if (!user) {
     return response.status(400).json({error: 'User does not exists!'});
-  };
+  }
 
+  user.name = name;
   user.age = age;
-  user.name = name; 
-
-  console.log(id);
-
-  return response.json(id);
+  
+  return response.json(user);
 });
 
 /* Delete Method */
-app.delete('/users', (request, response) => {
+app.delete("/users/:id", (request, response) => {
   const { id } = request.params;
 
   const user = users.find(user => user.id === id);
 
   users.splice(user, 1);
-
+  
   return response.json(id);
 });
 
 /* Run Server */
 const port = 3333;
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+app.listen(port, () => console.log(`Server is running on http://localhost:${port}`));
